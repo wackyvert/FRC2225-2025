@@ -18,13 +18,13 @@
   "Window": {
     "###/FMSInfo": {
       "Collapsed": "0",
-      "Pos": "60,60",
+      "Pos": "1106,197",
       "Size": "181,167"
     },
     "###/SmartDashboard/Field": {
       "Collapsed": "0",
-      "Pos": "166,24",
-      "Size": "740,373"
+      "Pos": "235,24",
+      "Size": "671,373"
     },
     "###FMS": {
       "Collapsed": "0",
@@ -33,16 +33,16 @@
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "250,465",
+      "Pos": "384,466",
       "Size": "796,189"
     },
     "###Keyboard 0 Settings": {
-      "Collapsed": "0",
-      "Pos": "864,66",
+      "Collapsed": "1",
+      "Pos": "863,66",
       "Size": "300,560"
     },
     "###NetworkTables": {
-      "Collapsed": "0",
+      "Collapsed": "1",
       "Pos": "399,253",
       "Size": "750,236"
     },
@@ -59,7 +59,7 @@
     "###System Joysticks": {
       "Collapsed": "0",
       "Pos": "205,308",
-      "Size": "192,218"
+      "Size": "148,35"
     },
     "###Timing": {
       "Collapsed": "0",
@@ -74,7 +74,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "7,20",
-      "Size": "92,116"
+      "Size": "99,116"
     }
   }
 }
