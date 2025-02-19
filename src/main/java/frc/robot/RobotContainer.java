@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.LowerIntake;
 import frc.robot.commands.RaiseIntake;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -37,7 +38,7 @@ public class RobotContainer
   final         CommandXboxController driverXbox = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "swerve/neo"));
+                                                                                "swerve/falcon"));
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
@@ -139,15 +140,15 @@ public class RobotContainer
   private void configureBindings()
   {
     // (Condition) ? Return-On-True : Return-on-False
-    drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
+    /*drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                 driveFieldOrientedAnglularVelocity :
                                 driveFieldOrientedAnglularVelocitySim);
-
+*/
 
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
-      driverXbox.a().onTrue(new RaiseIntake(intakeSubsystem));
-      driverXbox.b().onTrue(new LowerIntake(intakeSubsystem));
+      driverXbox.a().whileTrue(new RunIntake(intakeSubsystem));
+    //  driverXbox.b().onTrue(new LowerIntake(intakeSubsystem));
 
 
 

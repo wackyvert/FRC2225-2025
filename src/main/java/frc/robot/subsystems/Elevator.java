@@ -5,7 +5,7 @@ import com.revrobotics.spark.SparkLowLevel;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ElevatorSubsystem extends SubsystemBase {
+public class Elevator extends SubsystemBase {
     private static final double UPPER_LIMIT = 100.0;
     private static final double LOWER_LIMIT = 0.0;
     private final SparkFlex elevatorMotor;
@@ -17,7 +17,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorPosition=elevatorMotor.getEncoder().getPosition();
     }
 
-    public ElevatorSubsystem(int elevatorMotorCanId) {
+    public Elevator(int elevatorMotorCanId) {
         elevatorMotor = new SparkFlex(elevatorMotorCanId, SparkLowLevel.MotorType.kBrushless);
 
         pidController = new PIDController(0.1, 0.0, 0.0); // Just an example, please tune for your system.
