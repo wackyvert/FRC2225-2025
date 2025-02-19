@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -21,6 +22,7 @@ import frc.robot.commands.LowerIntake;
 import frc.robot.commands.RaiseIntake;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -119,6 +121,8 @@ public class RobotContainer
 
   Intake intakeSubsystem = new Intake();
 
+  Elevator elevatorSubsystem = new Elevator(Constants.ELEVATOR_ID);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -147,8 +151,7 @@ public class RobotContainer
 
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
-      driverXbox.a().whileTrue(new RunIntake(intakeSubsystem));
-    //  driverXbox.b().onTrue(new LowerIntake(intakeSubsystem));
+    driverXbox.y().whileTrue(new RepeatCommand(elevatorSubsystem.raiseElevatorCommand()).until(elevatorSubsystem.atUpperLimit())); //  driverXbox.b().onTrue(new LowerIntake(intakeSubsystem));
 
 
 

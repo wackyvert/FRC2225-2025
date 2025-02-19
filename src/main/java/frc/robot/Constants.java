@@ -27,7 +27,8 @@ public final class Constants
   public static final double UPPER_TARGET_POSITION = 100;
   public static final double LOWER_TARGET_POSITION=0;
     public static final int INTAKE_ID = 18;
-    // Maximum speed of the robot in meters per second, used to limit acceleration.
+  public static final int ELEVATOR_ID = 0;
+  // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants
 //  {
