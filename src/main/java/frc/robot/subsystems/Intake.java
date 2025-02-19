@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -16,12 +17,12 @@ import static frc.robot.Constants.UPPER_TARGET_POSITION;
 public class Intake extends SubsystemBase {
 
     SparkMax intakeMotor;
-    TalonFX drawbridgeMotor;
+    TalonSRX drawbridgeMotor;
     PIDController pidController;
 
     double drawBridgePosition;
     public Intake(){
-        drawbridgeMotor = new TalonFX(Constants.DRAWBRIDGE_ID);
+        drawbridgeMotor = new TalonSRX(Constants.DRAWBRIDGE_ID);
         intakeMotor = new SparkMax(Constants.INTAKE_ID, SparkLowLevel.MotorType.kBrushless);
         pidController = new PIDController(.1,0,0);
         pidController.setTolerance(5);
@@ -38,7 +39,8 @@ public class Intake extends SubsystemBase {
         return pidController.atSetpoint();
     }
     public void runIntake(){
-        intakeMotor.set(.5);
+        intakeMotor.set(.8);
+        DriverStation.reportWarning("Intake should be spinning",false);
     }
     public void stopIntake(){
         intakeMotor.stopMotor();
@@ -46,21 +48,21 @@ public class Intake extends SubsystemBase {
 
     public void raiseIntake() {
         double output = pidController.calculate(getDrawbridgePosition(), UPPER_TARGET_POSITION);
-        drawbridgeMotor.set(output);
+        drawbridgeMotor.set(ControlMode.PercentOutput, output);
     }
     public void lowerIntake() {
         double output = pidController.calculate(getDrawbridgePosition(), LOWER_TARGET_POSITION);
-        drawbridgeMotor.set(output);
+        drawbridgeMotor.set(ControlMode.PercentOutput,output);
     }
     public void stopDrawBridge(){
-        drawbridgeMotor.set(0);
+        drawbridgeMotor.set(ControlMode.PercentOutput,0);
     }
 
 
 
     //Get the raw motor position. Only use this once per loop to minimize CAN usage.
     public double getMotorPosition(){
-        return drawbridgeMotor.getPosition().getValueAsDouble();
+        return drawbridgeMotor.getSelectedSensorPosition();
     }
 
 

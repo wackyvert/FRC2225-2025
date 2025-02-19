@@ -147,7 +147,7 @@ public class RobotContainer
 
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
-      driverXbox.a().whileTrue(new RunIntake(intakeSubsystem));
+      driverXbox.a().whileTrue(new RunIntake(intakeSubsystem).repeatedly());
     //  driverXbox.b().onTrue(new LowerIntake(intakeSubsystem));
 
 
