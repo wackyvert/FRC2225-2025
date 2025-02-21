@@ -3,7 +3,11 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.function.BooleanSupplier;
 
 public class Elevator extends SubsystemBase {
     private static final double UPPER_LIMIT = 100.0;
@@ -28,10 +32,7 @@ public class Elevator extends SubsystemBase {
         return elevatorPosition;
     }
 
-    public void raiseElevator() {
-        double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
-        elevatorMotor.set(output);
-    }
+
 
     public void lowerElevator() {
         double output = pidController.calculate(getElevatorPosition(), LOWER_LIMIT);
@@ -42,10 +43,16 @@ public class Elevator extends SubsystemBase {
         elevatorMotor.set(0);
     }
 
-    public boolean atUpperLimit() {
-        return Math.abs(getElevatorPosition() - UPPER_LIMIT) < pidController.getErrorTolerance();
+    public void raiseElevator() {
+        double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
+        elevatorMotor.set(output);
     }
-
+    public Command raiseElevatorCommand(){
+        return new InstantCommand(this::raiseElevator);
+    }
+    public BooleanSupplier atUpperLimit() {
+        return ()-> Math.abs(getElevatorPosition() - UPPER_LIMIT) < pidController.getErrorTolerance();
+    }
     public boolean atLowerLimit() {
         return Math.abs(getElevatorPosition() - LOWER_LIMIT) < pidController.getErrorTolerance();
     }
