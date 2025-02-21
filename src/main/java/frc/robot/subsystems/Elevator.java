@@ -26,7 +26,7 @@ public class Elevator extends SubsystemBase {
     public Elevator(int elevatorMotorCanId) {
         elevatorMotor = new SparkFlex(elevatorMotorCanId, SparkLowLevel.MotorType.kBrushless);
 
-        pidController = new PIDController(0.07, 0.0, 0.0); // Just an example, please tune for your system.
+        pidController = new PIDController(0.01, 0.0, 0.0); // Just an example, please tune for your system.
         pidController.setTolerance(.25); // Just an example, please adjust according to your lift's specifics.
     }
 
