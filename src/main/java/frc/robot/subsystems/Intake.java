@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,6 +24,7 @@ public class Intake extends SubsystemBase {
     double drawBridgePosition;
     public Intake(){
         drawbridgeMotor = new TalonSRX(Constants.DRAWBRIDGE_ID);
+        
         intakeMotor = new SparkMax(Constants.INTAKE_ID, SparkLowLevel.MotorType.kBrushless);
         pidController = new PIDController(.1,0,0);
         pidController.setTolerance(5);
@@ -31,6 +33,7 @@ public class Intake extends SubsystemBase {
     public void periodic(){
         //Get the position of the motor once per loop only, and store it in the global variable.
         drawBridgePosition = getMotorPosition();
+        SmartDashboard.putNumber("Intake", drawBridgePosition);
     }
     public double getDrawbridgePosition(){
         return drawBridgePosition;

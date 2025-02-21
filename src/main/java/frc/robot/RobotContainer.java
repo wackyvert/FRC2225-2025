@@ -18,12 +18,16 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.LightsDefault;
+import frc.robot.commands.LowerElevator;
 import frc.robot.commands.LowerIntake;
+import frc.robot.commands.RaiseElevator;
 import frc.robot.commands.RaiseIntake;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LightSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -123,6 +127,7 @@ public class RobotContainer
 
   Elevator elevatorSubsystem = new Elevator(Constants.ELEVATOR_ID);
 
+  LightSubsystem lights=new LightSubsystem();
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -143,6 +148,7 @@ public class RobotContainer
    */
   private void configureBindings()
   {
+    //lights.setDefaultCommand(new LightsDefault(lights));
     // (Condition) ? Return-On-True : Return-on-False
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                 driveFieldOrientedAnglularVelocity :
@@ -152,8 +158,8 @@ public class RobotContainer
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
       driverXbox.a().whileTrue(new RunIntake(intakeSubsystem).repeatedly());
-    //  driverXbox.b().onTrue(new LowerIntake(intakeSubsystem));
-
+      driverXbox.b().whileTrue(new RaiseElevator(elevatorSubsystem).repeatedly());
+      driverXbox.x().whileTrue(new LowerElevator(elevatorSubsystem).repeatedly());
 
 
   }

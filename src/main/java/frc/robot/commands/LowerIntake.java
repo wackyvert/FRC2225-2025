@@ -38,6 +38,7 @@ public class LowerIntake extends Command {
     @Override
     public boolean isFinished() {
         //When the drawbridge is at the setpoint, this boolean will return true, causing the command to stop (and the motors to be stopped.)
-        return intakeSubsystem.atSetpoint();
+       return false;
+        // return intakeSubsystem.atSetpoint();
     }
 }

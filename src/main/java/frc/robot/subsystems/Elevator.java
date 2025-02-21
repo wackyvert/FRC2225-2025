@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.BooleanSupplier;
 
 public class Elevator extends SubsystemBase {
-    private static final double UPPER_LIMIT = 100.0;
-    private static final double LOWER_LIMIT = 0.0;
+    private static final double UPPER_LIMIT = -37.4;
+    private static final double LOWER_LIMIT = -0.9;
     private final SparkFlex elevatorMotor;
     private final PIDController pidController;
     private double elevatorPosition;
@@ -19,13 +20,14 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         elevatorPosition=elevatorMotor.getEncoder().getPosition();
+        SmartDashboard.putNumber("Elevator", elevatorPosition);
     }
 
     public Elevator(int elevatorMotorCanId) {
         elevatorMotor = new SparkFlex(elevatorMotorCanId, SparkLowLevel.MotorType.kBrushless);
 
-        pidController = new PIDController(0.1, 0.0, 0.0); // Just an example, please tune for your system.
-        pidController.setTolerance(5); // Just an example, please adjust according to your lift's specifics.
+        pidController = new PIDController(0.07, 0.0, 0.0); // Just an example, please tune for your system.
+        pidController.setTolerance(.25); // Just an example, please adjust according to your lift's specifics.
     }
 
     public double getElevatorPosition() {
@@ -35,7 +37,7 @@ public class Elevator extends SubsystemBase {
 
 
     public void lowerElevator() {
-        double output = pidController.calculate(getElevatorPosition(), LOWER_LIMIT);
+       double output = pidController.calculate(getElevatorPosition(), LOWER_LIMIT);
         elevatorMotor.set(output);
     }
 

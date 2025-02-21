@@ -24,10 +24,10 @@ public final class Constants
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(24.5);
     public static final int DRAWBRIDGE_ID = 50;
-  public static final double UPPER_TARGET_POSITION = 100;
-  public static final double LOWER_TARGET_POSITION=0;
+  public static final double UPPER_TARGET_POSITION = 0;
+  public static final double LOWER_TARGET_POSITION=100;
     public static final int INTAKE_ID = 18;
-  public static final int ELEVATOR_ID = 0;
+  public static final int ELEVATOR_ID = 37;
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants

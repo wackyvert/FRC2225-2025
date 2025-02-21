@@ -1,24 +1,24 @@
 {
   "drive": {
     "type": "sparkflex_vortex",
-    "id": 5,
+    "id": 1,
     "canbus": null
   },
   "angle": {
     "type": "talonfx",
-    "id": 2,
+    "id": 6,
     "canbus": null
   },
   "encoder": {
     "type": "thrifty",
-    "id": 2,
+    "id": 0,
     "canbus": null
   },
   "inverted": {
     "drive": true,
-    "angle": false
+    "angle": true
   },
-  "absoluteEncoderOffset": 138,
+  "absoluteEncoderOffset": 26.55,
   "location": {
     "front": -11,
     "left": 11
