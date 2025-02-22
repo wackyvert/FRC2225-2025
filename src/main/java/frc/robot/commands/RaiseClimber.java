@@ -2,13 +2,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Intake;
 
-public class LowerElevator extends Command {
+public class RaiseClimber extends Command {
     private static final double TARGET_POSITION = 100.0;
     private final Elevator elevatorSubsystem;
 
-    public LowerElevator(Elevator elevatorSubsystem) {
+    public RaiseClimber(Elevator elevatorSubsystem) {
         this.elevatorSubsystem = elevatorSubsystem;
         addRequirements(elevatorSubsystem);
     }
@@ -25,7 +24,7 @@ public class LowerElevator extends Command {
         //For example, if it is bound to A, while A is pressed, it will continually be sent a command.
         //So, 60 times a second, the PID Controller calculates a new output level, and sends that to the motor.
         //This is how we can make it go up and down quickly and smoothly.
-       elevatorSubsystem.lowerElevator();
+       elevatorSubsystem.raiseClimber();
     }
 
     @Override
@@ -33,8 +32,7 @@ public class LowerElevator extends Command {
         //This method gets called after the isFinished method returns true.
         // It is always necessary to stop your motors once the command finishes,
         // otherwise they will spin indefinitely.
-        elevatorSubsystem.stopElevator();
-
+        elevatorSubsystem.stopClimber();
     }
 
     @Override

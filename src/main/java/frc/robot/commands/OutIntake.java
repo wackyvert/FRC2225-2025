@@ -1,16 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 
-public class LowerElevator extends Command {
+public class OutIntake extends Command {
     private static final double TARGET_POSITION = 100.0;
-    private final Elevator elevatorSubsystem;
+    private final Intake intakeSubsystem;
 
-    public LowerElevator(Elevator elevatorSubsystem) {
-        this.elevatorSubsystem = elevatorSubsystem;
-        addRequirements(elevatorSubsystem);
+    public OutIntake(Intake intakeSubsystem) {
+        this.intakeSubsystem = intakeSubsystem;
+        addRequirements(intakeSubsystem);
     }
 
     @Override
@@ -25,7 +24,7 @@ public class LowerElevator extends Command {
         //For example, if it is bound to A, while A is pressed, it will continually be sent a command.
         //So, 60 times a second, the PID Controller calculates a new output level, and sends that to the motor.
         //This is how we can make it go up and down quickly and smoothly.
-       elevatorSubsystem.lowerElevator();
+        intakeSubsystem.outIntake();
     }
 
     @Override
@@ -33,14 +32,12 @@ public class LowerElevator extends Command {
         //This method gets called after the isFinished method returns true.
         // It is always necessary to stop your motors once the command finishes,
         // otherwise they will spin indefinitely.
-        elevatorSubsystem.stopElevator();
-
+        intakeSubsystem.stopIntake();
     }
 
     @Override
     public boolean isFinished() {
-       //When the drawbridge is at the setpoint, this boolean will return true, causing the command to stop (and the motors to be stopped.)
-      //  return elevatorSubsystem.atSetpoint();
+        //When the drawbridge is at the setpoint, this boolean will return true, causing the command to stop (and the motors to be stopped.)
         return false;
     }
 }

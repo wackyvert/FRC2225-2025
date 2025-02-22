@@ -15,16 +15,13 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.LightsDefault;
-import frc.robot.commands.LowerElevator;
-import frc.robot.commands.LowerIntake;
-import frc.robot.commands.RaiseElevator;
-import frc.robot.commands.RaiseIntake;
-import frc.robot.commands.RunIntake;
+import frc.robot.commands.*;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LightSubsystem;
@@ -42,6 +39,8 @@ public class RobotContainer
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(1);
+  final CommandJoystick driverJoystickL = new CommandJoystick(0);
+  final CommandJoystick driverJoystickR = new CommandJoystick(2);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/falcon"));
@@ -68,9 +67,9 @@ public class RobotContainer
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1,
-                                                                () -> driverXbox.getLeftX() * -1)
-                                                            .withControllerRotationAxis(driverXbox::getRightX)
+                                                                () -> driverJoystickR.getRawAxis(1) ,
+                                                                () -> driverJoystickR.getRawAxis(0) )
+                                                            .withControllerRotationAxis(driverJoystickL::getX)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -78,8 +77,8 @@ public class RobotContainer
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driverXbox::getRightX,
-                                                                                             driverXbox::getRightY)
+  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driverJoystickR::getX,
+                                                                                             driverJoystickR::getY).withControllerRotationAxis(driverJoystickL::getY)
                                                            .headingWhile(true);
 
 
@@ -128,6 +127,7 @@ public class RobotContainer
   Elevator elevatorSubsystem = new Elevator(Constants.ELEVATOR_ID);
 
   LightSubsystem lights=new LightSubsystem();
+  AlgaeIntake algaeIntakeSubsystem = new AlgaeIntake();
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -150,20 +150,26 @@ public class RobotContainer
   {
     //lights.setDefaultCommand(new LightsDefault(lights));
     // (Condition) ? Return-On-True : Return-on-False
+
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                 driveFieldOrientedAnglularVelocity :
                                 driveFieldOrientedAnglularVelocitySim);
 
 
-      driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightBumper().onTrue(Commands.none());
+    //  driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      //driverXbox.rightBumper().onTrue(Commands.none());
       driverXbox.a().whileTrue(new RunIntake(intakeSubsystem).repeatedly());
-      driverXbox.b().whileTrue(new RaiseElevator(elevatorSubsystem).repeatedly());
-      driverXbox.x().whileTrue(new LowerElevator(elevatorSubsystem).repeatedly());
-
-
+      driverXbox.b().whileTrue(new OutIntake(intakeSubsystem).repeatedly());
+      driverXbox.x().whileTrue(new RunAlgaeIntake(algaeIntakeSubsystem).repeatedly());
+      driverXbox.y().whileTrue(new BackAlgaeIntake(algaeIntakeSubsystem).repeatedly());
+      driverXbox.rightTrigger().whileTrue(new RaiseIntake(intakeSubsystem));
+      driverXbox.leftTrigger().whileTrue(new LowerIntake(intakeSubsystem));
+      driverXbox.rightBumper().whileTrue(new RaiseElevator(elevatorSubsystem));
+      driverXbox.leftBumper().whileTrue(new LowerElevator(elevatorSubsystem));
+      driverJoystickL.button(1).whileTrue(new RaiseClimber(elevatorSubsystem));
+    driverJoystickL.button(2).whileTrue(new LowerClimber(elevatorSubsystem));
   }
-
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

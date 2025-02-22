@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel;
@@ -24,7 +25,7 @@ public class Intake extends SubsystemBase {
     double drawBridgePosition;
     public Intake(){
         drawbridgeMotor = new TalonSRX(Constants.DRAWBRIDGE_ID);
-        
+        drawbridgeMotor.setNeutralMode(NeutralMode.Brake);
         intakeMotor = new SparkMax(Constants.INTAKE_ID, SparkLowLevel.MotorType.kBrushless);
         pidController = new PIDController(.1,0,0);
         pidController.setTolerance(5);
@@ -45,17 +46,20 @@ public class Intake extends SubsystemBase {
         intakeMotor.set(.8);
         DriverStation.reportWarning("Intake should be spinning",false);
     }
+    public void outIntake(){
+        intakeMotor.set(-.8);
+    }
     public void stopIntake(){
         intakeMotor.stopMotor();
     }
 
     public void raiseIntake() {
         double output = pidController.calculate(getDrawbridgePosition(), UPPER_TARGET_POSITION);
-        drawbridgeMotor.set(ControlMode.PercentOutput, output);
+        drawbridgeMotor.set(ControlMode.PercentOutput, .4);
     }
     public void lowerIntake() {
         double output = pidController.calculate(getDrawbridgePosition(), LOWER_TARGET_POSITION);
-        drawbridgeMotor.set(ControlMode.PercentOutput,output);
+        drawbridgeMotor.set(ControlMode.PercentOutput,-.4);
     }
     public void stopDrawBridge(){
         drawbridgeMotor.set(ControlMode.PercentOutput,0);
