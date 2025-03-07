@@ -22,12 +22,16 @@ public class Elevator extends SubsystemBase {
     private final TalonSRX algaeIntake = new TalonSRX(16);
     private double elevatorPosition;
     private DigitalInput topLimitSwitch = new DigitalInput(0);
+    private DigitalInput bottomLimitSwitch = new DigitalInput(1);
+   // private DigitalInput ballLimitSwitch = new DigitalInput(2);
     private SparkFlex climberMotor;
     @Override
     public void periodic() {
         elevatorPosition=elevatorMotor.getEncoder().getPosition();
         SmartDashboard.putNumber("Elevator", elevatorPosition);
         SmartDashboard.putBoolean("Top Limit Switch", topLimitSwitch.get());
+        SmartDashboard.putBoolean("Bottom Limit Switch", bottomLimitSwitch.get());
+        //SmartDashboard.putBoolean("Ball Limit Switch", ballLimitSwitch.get());
     }
 
     public Elevator(int elevatorMotorCanId) {
@@ -68,11 +72,12 @@ climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
 
     public void raiseElevator() {
        // double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
-       // if(topLimitSwitch.get()){
-        elevatorMotor.set(.1);
-       // else{
-       //     elevatorMotor.stopMotor();
-       // }
+       if(!bottomLimitSwitch.get()) {
+           elevatorMotor.set(.1);
+       }
+        else{
+            elevatorMotor.stopMotor();
+       }
     }
     public Command raiseElevatorCommand(){
         return new InstantCommand(this::raiseElevator);
