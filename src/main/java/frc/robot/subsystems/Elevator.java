@@ -53,8 +53,9 @@ climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
     }
 
     public void lowerElevator() {
+        double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
         if(topLimitSwitch.get()){
-            elevatorMotor.set(-.1);}
+            elevatorMotor.set(output);}
             else{
                 elevatorMotor.stopMotor();
             }
@@ -71,22 +72,19 @@ climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
     public void lowerClimber(){climberMotor.set(-.4);}
 
     public void raiseElevator() {
-       // double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
+        double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
        if(!bottomLimitSwitch.get()) {
-           elevatorMotor.set(.1);
+           elevatorMotor.set(output);
        }
         else{
             elevatorMotor.stopMotor();
        }
     }
-    public Command raiseElevatorCommand(){
-        return new InstantCommand(this::raiseElevator);
-    }
-    public BooleanSupplier atUpperLimit() {
-        return ()-> Math.abs(getElevatorPosition() - UPPER_LIMIT) < pidController.getErrorTolerance();
+     public BooleanSupplier atUpperLimit() {
+        return ()-> Math.abs(getElevatorPosition() - UPPER_LIMIT) < pidController.getErrorTolerance() || !topLimitSwitch.get();
     }
 
-    public boolean atLowerLimit() {
-        return Math.abs(getElevatorPosition() - LOWER_LIMIT) < pidController.getErrorTolerance();
+    public BooleanSupplier atLowerLimit() {
+        return ()-> Math.abs(getElevatorPosition() - LOWER_LIMIT) < pidController.getErrorTolerance() || bottomLimitSwitch.get();
     }
 }

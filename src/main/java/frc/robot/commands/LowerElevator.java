@@ -41,6 +41,7 @@ public class LowerElevator extends Command {
     public boolean isFinished() {
        //When the drawbridge is at the setpoint, this boolean will return true, causing the command to stop (and the motors to be stopped.)
       //  return elevatorSubsystem.atSetpoint();
-        return false;
+        return elevatorSubsystem.atLowerLimit().getAsBoolean();
     }
+
 }
