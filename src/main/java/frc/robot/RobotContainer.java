@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -134,6 +135,8 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+
+
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -178,6 +181,7 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
+    drivebase.zeroGyro();
     // An example command will be run in autonomous
     return drivebase.getAutonomousCommand("New Auto");
   }
