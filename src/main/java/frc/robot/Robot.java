@@ -106,8 +106,8 @@ eye = new Servo(1);
   {
 
     m_robotContainer.setMotorBrake(true);
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand= m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null)
     {
@@ -117,7 +117,7 @@ eye = new Servo(1);
   }
 
   /**
-   * This function is called periodically during autonomous.
+   * This function ips called periodically during autonomous.
    */
   @Override
   public void autonomousPeriodic()

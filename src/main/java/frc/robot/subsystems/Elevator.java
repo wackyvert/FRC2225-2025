@@ -3,8 +3,16 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkBase.PersistMode;
+
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkFlexConfig;
+
+
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,7 +24,8 @@ import java.util.function.BooleanSupplier;
 
 public class Elevator extends SubsystemBase {
     private static final double UPPER_LIMIT = -37.4;
-    private static final double LOWER_LIMIT = -0.9;
+    private static final double LOWER_LIMIT = 0;
+    private static final double AUTO_UP = -4;
     private final SparkFlex elevatorMotor;
     private final PIDController pidController;
     private final TalonSRX algaeIntake = new TalonSRX(16);
@@ -33,12 +42,16 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putBoolean("Bottom Limit Switch", bottomLimitSwitch.get());
         //SmartDashboard.putBoolean("Ball Limit Switch", ballLimitSwitch.get());
     }
-
+    public static final SparkFlexConfig elevatorMotorConfig= new SparkFlexConfig();
+    
     public Elevator(int elevatorMotorCanId) {
         algaeIntake.setNeutralMode(NeutralMode.Brake);
         elevatorMotor = new SparkFlex(elevatorMotorCanId, SparkLowLevel.MotorType.kBrushless);
-climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
-        pidController = new PIDController(0.01, 0.0, 0.0); // Just an example, please tune for your system.
+     
+        elevatorMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        elevatorMotor.configure(elevatorMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
+        pidController = new PIDController(0.05, 0.0, 0.01); // Just an example, please tune for your system.
         pidController.setTolerance(.25); // Just an example, please adjust according to your lift's specifics.
     }
 
@@ -53,8 +66,8 @@ climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
     }
 
     public void lowerElevator() {
-        double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
-        if(topLimitSwitch.get()){
+        double output = pidController.calculate(getElevatorPosition(), LOWER_LIMIT);
+        if(!bottomLimitSwitch.get()){
             elevatorMotor.set(output);}
             else{
                 elevatorMotor.stopMotor();
@@ -63,6 +76,15 @@ climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
 
     public void stopElevator() {
         elevatorMotor.set(0);
+    }
+    public void raiseElevatorAuto(){
+        double output = pidController.calculate(getElevatorPosition(), AUTO_UP);
+        if(topLimitSwitch.get()) {
+            elevatorMotor.set(output);
+        }
+         else{
+             elevatorMotor.stopMotor();
+        }
     }
 
     public void raiseClimber() {
@@ -73,7 +95,7 @@ climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
 
     public void raiseElevator() {
         double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
-       if(!bottomLimitSwitch.get()) {
+       if(topLimitSwitch.get()) {
            elevatorMotor.set(output);
        }
         else{
@@ -82,6 +104,9 @@ climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
     }
      public BooleanSupplier atUpperLimit() {
         return ()-> Math.abs(getElevatorPosition() - UPPER_LIMIT) < pidController.getErrorTolerance() || !topLimitSwitch.get();
+    }
+    public BooleanSupplier atAutoLimit() {
+        return ()-> Math.abs(getElevatorPosition() - AUTO_UP) < pidController.getErrorTolerance() || !topLimitSwitch.get();
     }
 
     public BooleanSupplier atLowerLimit() {

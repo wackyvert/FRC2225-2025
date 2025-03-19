@@ -29,11 +29,14 @@ public class AlgaeIntake extends SubsystemBase {
     }
     public void runAlgaeIfLimitSwitch(){
         if(!ballLimitSwitch.get()){
-            runAlgaeIntake();
+            runAlgaeIntakeL();
         }
     }
     public void runAlgaeIntake(){
-      algaeIntake.set(ControlMode.PercentOutput, -.4);
+      algaeIntake.set(ControlMode.PercentOutput, -.75);
+    }
+    public void runAlgaeIntakeL(){
+        algaeIntake.set(ControlMode.PercentOutput, -.4);
     }
     public void backAlgaeIntake(){
         algaeIntake.set(ControlMode.PercentOutput, .4);

@@ -9,6 +9,18 @@
           "data": {
             "pathName": "New Path"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeDown"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raiseIntake"
+          }
         }
       ]
     }

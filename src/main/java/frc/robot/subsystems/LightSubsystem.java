@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class LightSubsystem extends SubsystemBase {
     private final CANdle m_candle = new CANdle(44, "rio");
-    private final int LedCount = 100;
+    private final int LedCount = 150;
 
 
     private Animation m_toAnimate = null;
@@ -53,7 +53,7 @@ public class LightSubsystem extends SubsystemBase {
        // configAll.statusLedOffWhenActive = true;
         configAll.disableWhenLOS = false;
         configAll.stripType = LEDStripType.GRB;
-        configAll.brightnessScalar = .4;
+        configAll.brightnessScalar = .7;
        // configAll.vBatOutputMode = VBatOutputMode.Modulated;
         m_candle.configAllSettings(configAll, 100);
     }
@@ -90,7 +90,7 @@ public class LightSubsystem extends SubsystemBase {
         changeAnimation(AnimationTypes.SetAll);
     }
     public void setGreen(){
-        m_candle.setLEDs(0,255, 0, 0, 0, 100);
+        m_candle.setLEDs(0,255, 0, 0, 0, 150);
     }
 
     /* Wrappers so we can access the CANdle from the subsystem */

@@ -70,7 +70,7 @@ public class RobotContainer
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driverJoystickR.getRawAxis(1) ,
                                                                 () -> driverJoystickR.getRawAxis(0) )
-                                                            .withControllerRotationAxis(driverJoystickL::getX)
+                                                            .withControllerRotationAxis(()-> driverJoystickL.getRawAxis(0))
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -79,8 +79,8 @@ public class RobotContainer
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
   SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driverJoystickR::getX,
-                                                                                             driverJoystickR::getY).withControllerRotationAxis(driverJoystickL::getY)
-                                                           .headingWhile(true);
+                                                                                             driverJoystickR::getY).withControllerRotationAxis(driverJoystickL::getX)
+                                                                                             .headingWhile(true);
 
 
   // Applies deadbands and inverts controls because joysticks
@@ -135,9 +135,13 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-
-
-    // Configure the trigger bindings
+  
+  NamedCommands.registerCommand("elevatorUp", new RaiseElevatorAuto(elevatorSubsystem));
+  NamedCommands.registerCommand("intakeDown", new LowerIntakeAuto(intakeSubsystem));
+  NamedCommands.registerCommand("raiseIntake", new RaiseIntakeAuto(intakeSubsystem));
+  NamedCommands.registerCommand("spitIntake2s", new OutIntake(intakeSubsystem).withTimeout(2));
+  NamedCommands.registerCommand("spinIntake2s", new RunIntake(intakeSubsystem).withTimeout(2));
+  // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
@@ -160,7 +164,7 @@ public class RobotContainer
                                 driveFieldOrientedAnglularVelocitySim);
 
 
-    //  driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+     driverJoystickR.button(1).whileTrue(Commands.runOnce(drivebase::zeroGyro, drivebase));
       //driverXbox.rightBumper().onTrue(Commands.none());
       driverXbox.a().whileTrue(new RunIntake(intakeSubsystem).repeatedly());
       driverXbox.b().whileTrue(new OutIntake(intakeSubsystem).repeatedly());
@@ -181,9 +185,10 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    drivebase.zeroGyro();
+   // drivebase.zeroGyro();
     // An example command will be run in autonomous
     return drivebase.getAutonomousCommand("New Auto");
+    //return new LowerIntakeAuto(intakeSubsystem).andThen(new RaiseIntakeAuto(intakeSubsystem));
   }
 
   public void setMotorBrake(boolean brake)

@@ -2,14 +2,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Intake;
 
-public class RunIntake extends Command {
+public class RaiseIntakeAuto extends Command {
     private static final double TARGET_POSITION = 100.0;
     private final Intake intakeSubsystem;
 
-    public RunIntake(Intake intakeSubsystem) {
+    public RaiseIntakeAuto(Intake intakeSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
-        //addRequirements(intakeSubsystem);
+        addRequirements(intakeSubsystem);
     }
 
     @Override
@@ -24,7 +25,7 @@ public class RunIntake extends Command {
         //For example, if it is bound to A, while A is pressed, it will continually be sent a command.
         //So, 60 times a second, the PID Controller calculates a new output level, and sends that to the motor.
         //This is how we can make it go up and down quickly and smoothly.
-        intakeSubsystem.runIntake();
+       intakeSubsystem.raiseIntake();
     }
 
     @Override
@@ -37,7 +38,8 @@ public class RunIntake extends Command {
 
     @Override
     public boolean isFinished() {
-        //When the drawbridge is at the setpoint, this boolean will return true, causing the command to stop (and the motors to be stopped.)
-        return false;
+       //When the elevator is at the setpoint, this boolean will return true, causing the command to stop (and the motors to be stopped.)
+      //  return intakeSubsystem.atSetpoint();
+        return intakeSubsystem.atUpperLimit().getAsBoolean();
     }
 }

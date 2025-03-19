@@ -9,7 +9,7 @@ public class OutIntake extends Command {
 
     public OutIntake(Intake intakeSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
-        addRequirements(intakeSubsystem);
+       // addRequirements(intakeSubsystem);
     }
 
     @Override
