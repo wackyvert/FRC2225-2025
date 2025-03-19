@@ -28,6 +28,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LightSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.util.function.Supplier;
+
 import swervelib.SwerveInputStream;
 
 /**
@@ -176,6 +178,8 @@ public class RobotContainer
       driverXbox.leftBumper().whileTrue(new LowerElevator(elevatorSubsystem));
       driverJoystickL.button(1).whileTrue(new RaiseClimber(elevatorSubsystem));
     driverJoystickL.button(2).whileTrue(new LowerClimber(elevatorSubsystem));
+   driverXbox.button(5).whileTrue(new DriveToPose(drivebase, processorPose()));
+    //driverJoystickL.button(4).whileTrue(new DriveToPose(drivebase, nearestLeftCoral()));
   }
   
   /**
@@ -191,6 +195,15 @@ public class RobotContainer
     //return new LowerIntakeAuto(intakeSubsystem).andThen(new RaiseIntakeAuto(intakeSubsystem));
   }
 
+
+  private Supplier<Pose2d> processorPose() {
+    return () -> {
+      if(AllianceFlipUtil.shouldFlip()){
+        return FieldConstants.Processor.opposingCenterFace;
+      }
+      return FieldConstants.Processor.centerFace;
+    };
+  };
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);
