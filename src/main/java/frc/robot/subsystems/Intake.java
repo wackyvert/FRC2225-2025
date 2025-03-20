@@ -63,11 +63,11 @@ public class Intake extends SubsystemBase {
     }
 
     public void raiseIntake() {
-        double output = MathUtil.clamp(pidController.calculate(getDrawbridgePosition(), UPPER_TARGET_POSITION), 0, .45);
+        double output = MathUtil.clamp(pidController.calculate(getDrawbridgePosition(), UPPER_TARGET_POSITION), 0, .55);
         drawbridgeMotor.set(ControlMode.PercentOutput, output);
     }
     public void lowerIntake() {
-        double output = MathUtil.clamp(pidController.calculate(getDrawbridgePosition(), LOWER_TARGET_POSITION), -.25, 0);
+        double output = MathUtil.clamp(pidController.calculate(getDrawbridgePosition(), LOWER_TARGET_POSITION), -.35, 0);
         drawbridgeMotor.set(ControlMode.PercentOutput,output);
     }
     public void stopDrawBridge(){

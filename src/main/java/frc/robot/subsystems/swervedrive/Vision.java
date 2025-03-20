@@ -511,7 +511,7 @@ public class Vision
         {
             double mostRecentTimestamp = resultsList.isEmpty() ? 0.0 : resultsList.get(0).getTimestampSeconds();
             double currentTimestamp    = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
-            double debounceTime        = Milliseconds.of(15).in(Seconds);
+
             for (PhotonPipelineResult result : resultsList)
             {
                 mostRecentTimestamp = Math.max(mostRecentTimestamp, result.getTimestampSeconds());
@@ -519,9 +519,7 @@ public class Vision
 
                 resultsList = Robot.isReal() ? camera.getAllUnreadResults() : cameraSim.getCamera().getAllUnreadResults();
                 lastReadTimestamp = currentTimestamp;
-                resultsList.sort((PhotonPipelineResult a, PhotonPipelineResult b) -> {
-                    return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
-                });
+                resultsList.sort((PhotonPipelineResult a, PhotonPipelineResult b) -> a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1);
                 if (!resultsList.isEmpty())
                 {
                     updateEstimatedGlobalPose();
