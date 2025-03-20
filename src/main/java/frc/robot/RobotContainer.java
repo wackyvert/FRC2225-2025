@@ -178,7 +178,7 @@ public class RobotContainer
       driverXbox.leftBumper().whileTrue(new LowerElevator(elevatorSubsystem));
       driverJoystickL.button(1).whileTrue(new RaiseClimber(elevatorSubsystem));
     driverJoystickL.button(2).whileTrue(new LowerClimber(elevatorSubsystem));
-   driverXbox.button(5).whileTrue(new DriveToPose(drivebase, processorPose()));
+   //driverXbox.button(5).whileTrue(new DriveToPose(drivebase, processorPose()));
     //driverJoystickL.button(4).whileTrue(new DriveToPose(drivebase, nearestLeftCoral()));
   }
   
