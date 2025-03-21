@@ -130,16 +130,18 @@ public class RobotContainer
   Elevator elevatorSubsystem = new Elevator(Constants.ELEVATOR_ID);
   
 
-  LightSubsystem lights=new LightSubsystem();
-  AlgaeIntake algaeIntakeSubsystem = new AlgaeIntake();
-  /**
+ AlgaeIntake algaeIntakeSubsystem = new AlgaeIntake();
+ LightSubsystem lights=new LightSubsystem(algaeIntakeSubsystem.getAlgaeIntakeLimit());
+   
+ /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer()
   {
+    NamedCommands.registerCommand("lowerIntakeBit", new LowerIntakeAutoBit(intakeSubsystem).withTimeout(1));
   NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem));
   NamedCommands.registerCommand("elevatorUp", new RaiseElevatorAuto(elevatorSubsystem));
-  NamedCommands.registerCommand("intakeDown", new LowerIntakeAuto(intakeSubsystem));
+  NamedCommands.registerCommand("intakeDown", new LowerIntakeAutoBit(intakeSubsystem));
   NamedCommands.registerCommand("raiseIntake", new RaiseIntakeAuto(intakeSubsystem));
   NamedCommands.registerCommand("spitIntake2s", new OutIntake(intakeSubsystem).withTimeout(2));
   NamedCommands.registerCommand("spinIntake2s", new RunIntake(intakeSubsystem).withTimeout(2));

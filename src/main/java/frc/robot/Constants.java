@@ -28,7 +28,7 @@ public final class Constants {
   public static final double MAX_SPEED = Units.feetToMeters(24.5);
   public static final int DRAWBRIDGE_ID = 50;
   public static final double UPPER_TARGET_POSITION = 0;
-  public static final double LOWER_TARGET_POSITION = -2560;
+  public static final double LOWER_TARGET_POSITION = -2900;
   public static final int INTAKE_ID = 18;
   public static final int ELEVATOR_ID = 37;
   // Maximum speed of the robot in meters per second, used to limit acceleration.

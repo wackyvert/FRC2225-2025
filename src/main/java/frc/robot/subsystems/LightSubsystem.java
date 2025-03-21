@@ -23,7 +23,7 @@ import java.util.Optional;
 public class LightSubsystem extends SubsystemBase {
     private final CANdle m_candle = new CANdle(44, "rio");
     private final int LedCount = 150;
-
+    private boolean algae;
 
     private Animation m_toAnimate = null;
 
@@ -46,8 +46,8 @@ public class LightSubsystem extends SubsystemBase {
     }
     private AnimationTypes m_currentAnimation;
     private XboxController noah = new XboxController(2);
-    public LightSubsystem() {
-
+    public LightSubsystem(boolean algae) {
+this.algae=algae;
         //changeAnimation(AnimationTypes.SetAll);
         CANdleConfiguration configAll = new CANdleConfiguration();
        // configAll.statusLedOffWhenActive = true;
@@ -160,32 +160,15 @@ public class LightSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-            if(!clearCandle){
+          /*   if(!clearCandle){
                 m_candle.animate(m_toAnimate);
-            }
-            if (noah.getAButton()){
-            changeAnimation(AnimationTypes.solid_yellow_strobe);
-           turnOnAnimation();
-            }
-            else if (noah.getXButton()){
-                changeAnimation(AnimationTypes.solid_green_strobe);
-            turnOnAnimation();
-            }
-            else if (noah.getYButton()){
-              
-                changeAnimation(AnimationTypes.solid_purple_strobe);
-                turnOnAnimation();
-            }
-            else if (noah.getRightTriggerAxis()>.5){
-                changeAnimation(AnimationTypes.solid_orange_strobe);
-                turnOnAnimation();
-            }
-            else if (noah.getLeftTriggerAxis()>.5){
-            changeAnimation(AnimationTypes.solid_white_strobe);
-            turnOnAnimation();
-            
+            }*/
+            if (!algae){
+                turnOffAnimation();
+            setGreen();
             }
             else{
+                turnOnAnimation();
                 changeAnimation(AnimationTypes.Rainbow);
             }
 

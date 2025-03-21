@@ -13,6 +13,12 @@
         {
           "type": "named",
           "data": {
+            "name": "lowerIntakeBit"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "spitIntake2s"
           }
         },

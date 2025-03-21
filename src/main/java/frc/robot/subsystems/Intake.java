@@ -70,6 +70,10 @@ public class Intake extends SubsystemBase {
         double output = MathUtil.clamp(pidController.calculate(getDrawbridgePosition(), LOWER_TARGET_POSITION), -.35, 0);
         drawbridgeMotor.set(ControlMode.PercentOutput,output);
     }
+    public void lowerIntakeAuto() {
+        double output = MathUtil.clamp(pidController.calculate(getDrawbridgePosition(), -380), -.35, 0);
+        drawbridgeMotor.set(ControlMode.PercentOutput,output);
+    }
     public void stopDrawBridge(){
         drawbridgeMotor.set(ControlMode.PercentOutput,0);
     }

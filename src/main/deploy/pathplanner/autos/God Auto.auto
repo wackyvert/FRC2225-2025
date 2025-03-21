@@ -29,15 +29,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Move back to Reef after 180"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "intakeAlgae"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Move back to Reef after 180"
           }
         },
         {
