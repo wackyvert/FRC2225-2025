@@ -92,6 +92,9 @@ this.algaeIntake=algaeIntake;
     public void setColors() {
         changeAnimation(AnimationTypes.SetAll);
     }
+    public void setRainbow(){
+        m_candle.animate(rainbow);
+    }
     public void setGreen(){
         m_candle.setLEDs(0,255, 0, 0, 0, LedCount);
     }
@@ -165,13 +168,7 @@ this.algaeIntake=algaeIntake;
     
     @Override
     public void periodic() {
-        if(DriverStation.getMatchTime()<30){
-            thirty=true;
-        }
-         if(DriverStation.getMatchTime()<25){
-            twentyfive=true;
-            thirty=false;
-        }
+       
 
         // This method will be called once per scheduler run
 
@@ -179,7 +176,7 @@ this.algaeIntake=algaeIntake;
             m_candle.clearAnimation(0);
             setGreen();
             }
-            else if(twentyfive&&DriverStation.isEnabled()){
+           /*  else if(twentyfive&&DriverStation.isEnabled()){
                m_candle.clearAnimation(0);
               m_candle.setLEDs(255, 0, 0);
             
@@ -189,7 +186,7 @@ this.algaeIntake=algaeIntake;
                 m_candle.animate(flashYellow);
             
 
-            }
+            }*/
             else {
                 m_candle.animate(rainbow);
             }
