@@ -137,7 +137,7 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-  
+  NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem));
   NamedCommands.registerCommand("elevatorUp", new RaiseElevatorAuto(elevatorSubsystem));
   NamedCommands.registerCommand("intakeDown", new LowerIntakeAuto(intakeSubsystem));
   NamedCommands.registerCommand("raiseIntake", new RaiseIntakeAuto(intakeSubsystem));

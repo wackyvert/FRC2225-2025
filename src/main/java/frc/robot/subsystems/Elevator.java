@@ -54,7 +54,15 @@ public class Elevator extends SubsystemBase {
         pidController = new PIDController(0.05, 0.0, 0.01); // Just an example, please tune for your system.
         pidController.setTolerance(.25); // Just an example, please adjust according to your lift's specifics.
     }
-
+    public void lowerElevatorAuto(){
+        double output = pidController.calculate(getElevatorPosition(), LOWER_LIMIT);
+        if(!bottomLimitSwitch.get()) {
+            elevatorMotor.set(output);
+        }
+        else{
+            elevatorMotor.stopMotor();
+        }
+    }
     public double getElevatorPosition() {
         return elevatorPosition;
     }
