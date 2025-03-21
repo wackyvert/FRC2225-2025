@@ -143,8 +143,8 @@ public class RobotContainer
   NamedCommands.registerCommand("raiseIntake", new RaiseIntakeAuto(intakeSubsystem));
   NamedCommands.registerCommand("spitIntake2s", new OutIntake(intakeSubsystem).withTimeout(2));
   NamedCommands.registerCommand("spinIntake2s", new RunIntake(intakeSubsystem).withTimeout(2));
-  NamedCommands.registerCommand("intakeAlgae", new RunAlgaeIntake (algaeIntakeSubsystem));
-  NamedCommands.registerCommand("outtakeAlgae", new BackAlgaeIntake(algaeIntakeSubsystem));
+  NamedCommands.registerCommand("intakeAlgae", new RunAlgaeIntake (algaeIntakeSubsystem).withTimeout(2));
+  NamedCommands.registerCommand("outtakeAlgae", new BackAlgaeIntake(algaeIntakeSubsystem).withTimeout(2));
 
   // Configure the trigger bindings
     configureBindings();
