@@ -21,10 +21,11 @@ import frc.robot.RobotContainer;
 import java.util.Optional;
 
 public class LightSubsystem extends SubsystemBase {
+    private AlgaeIntake algaeIntake;
     private final CANdle m_candle = new CANdle(44, "rio");
     private final int LedCount = 150;
-    private boolean algae;
 
+    private Animation rainbow  = new RainbowAnimation(1, 0.1, LedCount);
     private Animation m_toAnimate = null;
 
     public enum AnimationTypes {
@@ -46,8 +47,8 @@ public class LightSubsystem extends SubsystemBase {
     }
     private AnimationTypes m_currentAnimation;
     private XboxController noah = new XboxController(2);
-    public LightSubsystem(boolean algae) {
-this.algae=algae;
+    public LightSubsystem(AlgaeIntake algaeIntake) {
+this.algaeIntake=algaeIntake;
         //changeAnimation(AnimationTypes.SetAll);
         CANdleConfiguration configAll = new CANdleConfiguration();
        // configAll.statusLedOffWhenActive = true;
@@ -90,7 +91,7 @@ this.algae=algae;
         changeAnimation(AnimationTypes.SetAll);
     }
     public void setGreen(){
-        m_candle.setLEDs(0,255, 0, 0, 0, 150);
+        m_candle.setLEDs(0,255, 0, 0, 0, LedCount);
     }
 
     /* Wrappers so we can access the CANdle from the subsystem */
@@ -160,16 +161,13 @@ this.algae=algae;
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-          /*   if(!clearCandle){
-                m_candle.animate(m_toAnimate);
-            }*/
-            if (!algae){
-                turnOffAnimation();
+
+            if (!algaeIntake.getAlgaeIntakeLimit()){
+
             setGreen();
             }
             else{
-                turnOnAnimation();
-                changeAnimation(AnimationTypes.Rainbow);
+                m_candle.animate(rainbow);
             }
 
     }

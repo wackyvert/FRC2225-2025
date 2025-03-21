@@ -131,7 +131,7 @@ public class RobotContainer
   
 
  AlgaeIntake algaeIntakeSubsystem = new AlgaeIntake();
- LightSubsystem lights=new LightSubsystem(algaeIntakeSubsystem.getAlgaeIntakeLimit());
+ LightSubsystem lights=new LightSubsystem(algaeIntakeSubsystem);
    
  /**
    * The container for the robot. Contains subsystems, OI devices, and commands.

@@ -28,7 +28,7 @@ public class AlgaeIntake extends SubsystemBase {
 
     }
     public void runAlgaeIfLimitSwitch(){
-        if(!ballLimitSwitch.get()){
+        if(!getAlgaeIntakeLimit()){
             runAlgaeIntakeL();
         }
     }
