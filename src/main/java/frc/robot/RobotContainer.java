@@ -143,6 +143,9 @@ public class RobotContainer
   NamedCommands.registerCommand("raiseIntake", new RaiseIntakeAuto(intakeSubsystem));
   NamedCommands.registerCommand("spitIntake2s", new OutIntake(intakeSubsystem).withTimeout(2));
   NamedCommands.registerCommand("spinIntake2s", new RunIntake(intakeSubsystem).withTimeout(2));
+  NamedCommands.registerCommand("intakeAlgae", new RunAlgaeIntake (algaeIntakeSubsystem));
+  NamedCommands.registerCommand("outtakeAlgae", new BackAlgaeIntake(algaeIntakeSubsystem));
+
   // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);

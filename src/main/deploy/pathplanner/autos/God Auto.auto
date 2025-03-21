@@ -23,18 +23,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Move back to Reef after 180"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "elevatorUp"
@@ -43,7 +31,37 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Move back to Reef after 180"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Reef to Processor"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "elevatorDown"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "outtakeAlgae"
           }
         }
       ]
