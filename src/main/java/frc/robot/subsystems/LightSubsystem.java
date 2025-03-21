@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,11 +21,12 @@ import frc.robot.RobotContainer;
 
 import java.util.Optional;
 
+
 public class LightSubsystem extends SubsystemBase {
     private AlgaeIntake algaeIntake;
     private final CANdle m_candle = new CANdle(44, "rio");
     private final int LedCount = 150;
-
+    private Animation flashYellow = new StrobeAnimation(226,255,0, 0, .2, LedCount);
     private Animation rainbow  = new RainbowAnimation(1, 0.1, LedCount);
     private Animation m_toAnimate = null;
 
@@ -157,18 +159,41 @@ this.algaeIntake=algaeIntake;
         }
         //System.out.println("Changed to " + m_currentAnimation.toString());
     }
+    boolean twentyfive=false;
+    boolean thirty=false;
     boolean clearCandle=false;
+    
     @Override
     public void periodic() {
+        if(DriverStation.getMatchTime()<30){
+            thirty=true;
+        }
+         if(DriverStation.getMatchTime()<25){
+            twentyfive=true;
+            thirty=false;
+        }
+
         // This method will be called once per scheduler run
 
             if (!algaeIntake.getAlgaeIntakeLimit()){
-
+            m_candle.clearAnimation(0);
             setGreen();
             }
-            else{
+            else if(twentyfive&&DriverStation.isEnabled()){
+               m_candle.clearAnimation(0);
+              m_candle.setLEDs(255, 0, 0);
+            
+
+            }
+            else if(thirty&&DriverStation.isEnabled()){
+                m_candle.animate(flashYellow);
+            
+
+            }
+            else {
                 m_candle.animate(rainbow);
             }
+            
 
     }
     public void turnOffAnimation(){

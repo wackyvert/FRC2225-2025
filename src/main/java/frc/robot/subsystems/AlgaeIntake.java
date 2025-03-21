@@ -25,7 +25,7 @@ public class AlgaeIntake extends SubsystemBase {
     }
     @Override
     public void periodic(){
-
+SmartDashboard.putBoolean("algae limit", getAlgaeIntakeLimit());
     }
     public void runAlgaeIfLimitSwitch(){
         if(!getAlgaeIntakeLimit()){
