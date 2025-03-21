@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New Path"
+            "pathName": "Center to reef"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intakeDown"
+            "name": "spitIntake2s"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "raiseIntake"
+            "pathName": "Reef back do 180"
           }
         }
       ]

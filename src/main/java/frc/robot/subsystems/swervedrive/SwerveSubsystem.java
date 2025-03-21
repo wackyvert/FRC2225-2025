@@ -52,7 +52,7 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-
+import frc.robot.AllianceFlipUtil;
 public class SwerveSubsystem extends SubsystemBase
 {
   public boolean redTeam(){
@@ -119,7 +119,7 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
-    //RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyro));
+    //RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyroWithAlliance));
   }
 
   /**
@@ -266,7 +266,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Command getAutonomousCommand(String pathName)
   {
     // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return new PathPlannerAuto(pathName, redTeam());
+    return new PathPlannerAuto(pathName, AllianceFlipUtil.shouldFlip());
   }
 
   /**

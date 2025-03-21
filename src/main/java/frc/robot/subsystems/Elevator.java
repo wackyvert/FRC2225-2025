@@ -88,10 +88,10 @@ public class Elevator extends SubsystemBase {
     }
 
     public void raiseClimber() {
-        climberMotor.set(0.4);
+        climberMotor.set(0.6);
     }
     public void stopClimber() {climberMotor.set(0);}
-    public void lowerClimber(){climberMotor.set(-.4);}
+    public void lowerClimber(){climberMotor.set(-.6);}
 
     public void raiseElevator() {
         double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);

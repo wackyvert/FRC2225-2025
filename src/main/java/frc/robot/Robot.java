@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -45,10 +47,12 @@ public class Robot extends TimedRobot
   @Override
   public void robotInit()
   {
+    CameraServer.startAutomaticCapture();
+   // CameraServer.startAutomaticCapture(1);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
+      
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
@@ -104,7 +108,7 @@ eye = new Servo(1);
   @Override
   public void autonomousInit()
   {
-
+    
     m_robotContainer.setMotorBrake(true);
     //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_autonomousCommand= m_robotContainer.getAutonomousCommand();
