@@ -11,9 +11,10 @@ public class RunAlgaeIntakeLimit extends Command {
     AlgaeIntake algaeIntake;
     LightSubsystem lightSubsystem;
 
-    public RunAlgaeIntakeLimit(AlgaeIntake algaeIntake, LightSubsystem lightSubsystem) {
+    public RunAlgaeIntakeLimit(AlgaeIntake algaeIntake) {
         this.algaeIntake = algaeIntake;
         this.lightSubsystem=lightSubsystem;
+
         addRequirements(algaeIntake);
     }
 
@@ -30,9 +31,9 @@ public class RunAlgaeIntakeLimit extends Command {
         //So, 60 times a second, the PID Controller calculates a new output level, and sends that to the motor.
         //This is how we can make it go up and down quickly and smoothly.
         algaeIntake.runAlgaeIfLimitSwitch();
-        if(!algaeIntake.getAlgaeIntakeLimit()){
-            lightSubsystem.setGreen();
-        }
+        algaeIntake.setLED();
+
+
     }
 
     @Override

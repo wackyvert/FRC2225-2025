@@ -18,12 +18,14 @@ import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 import frc.robot.RobotContainer;
+import frc.robot.commands.SetFlashingYellowCommand;
+import frc.robot.commands.SetRedCommand;
 
 import java.util.Optional;
 
 
 public class LightSubsystem extends SubsystemBase {
-    private AlgaeIntake algaeIntake;
+
     private final CANdle m_candle = new CANdle(44, "rio");
     private final int LedCount = 150;
     private Animation flashYellow = new StrobeAnimation(226,255,0, 0, .2, LedCount);
@@ -49,8 +51,8 @@ public class LightSubsystem extends SubsystemBase {
     }
     private AnimationTypes m_currentAnimation;
     private XboxController noah = new XboxController(2);
-    public LightSubsystem(AlgaeIntake algaeIntake) {
-this.algaeIntake=algaeIntake;
+    public LightSubsystem() {
+
         //changeAnimation(AnimationTypes.SetAll);
         CANdleConfiguration configAll = new CANdleConfiguration();
        // configAll.statusLedOffWhenActive = true;
@@ -165,7 +167,75 @@ this.algaeIntake=algaeIntake;
     boolean twentyfive=false;
     boolean thirty=false;
     boolean clearCandle=false;
-    
+    public void setLEDState(LEDState newState) {
+        this.currentState = newState;
+    }
+    public enum LEDState {
+        GREEN,
+        RAINBOW,
+        TEAM_COLOR,
+        ANIMATION_OFF,
+
+        SOLID_RED,
+
+        FLASHING_YELLOW
+
+
+    }
+
+    private LEDState currentState = LEDState.RAINBOW;
+    private LEDState lastState = null; // used to track changes
+    boolean triggered25=false;
+
+    boolean triggered30=false;
+    @Override
+    public void periodic() {
+        double matchTime = DriverStation.getMatchTime();
+        if (matchTime > 0) { // prevent weird -1 when DS is disconnected
+
+
+            if (matchTime <= 30 && !triggered30) {
+                new SetFlashingYellowCommand(this).schedule();
+                triggered30 = true;
+            }
+
+            if (matchTime <= 25 && !triggered25) {
+                new SetRedCommand(this).schedule();
+                triggered25 = true;
+            }
+        }
+        if (currentState != lastState) {
+            switch (currentState) {
+                case GREEN:
+                    m_candle.clearAnimation(0);
+                    setGreen();
+                    break;
+                case TEAM_COLOR:
+                    m_candle.clearAnimation(0);
+                    setTeamColor();
+                    break;
+                case ANIMATION_OFF:
+                    m_candle.clearAnimation(0);
+                    m_candle.setLEDs(0,0,0);
+                    break;
+                case SOLID_RED:
+                    m_candle.clearAnimation(0);
+                    m_candle.setLEDs(255, 0,0);
+                    break;
+                case FLASHING_YELLOW:
+                    m_candle.animate(flashYellow);
+                    break;
+                case RAINBOW:
+                default:
+                    m_candle.animate(rainbow);
+                    break;
+            }
+            lastState = currentState;
+        }
+    }
+
+
+/*
     @Override
     public void periodic() {
        
@@ -186,13 +256,15 @@ this.algaeIntake=algaeIntake;
                 m_candle.animate(flashYellow);
             
 
-            }*/
+            }
             else {
                 m_candle.animate(rainbow);
             }
             
 
     }
+
+    */
     public void turnOffAnimation(){
         clearCandle=true;
         m_candle.clearAnimation(0);
@@ -208,15 +280,5 @@ this.algaeIntake=algaeIntake;
             }
         }
     }
-    public void turnOnAnimation(){
 
-        clearCandle=false;
-    }
-    public Animation getOldAnimation(){
-        return m_toAnimate;
-    }
-    @Override
-    public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
-    }
 }

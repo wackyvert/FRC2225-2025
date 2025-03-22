@@ -128,11 +128,11 @@ public class RobotContainer
   Intake intakeSubsystem = new Intake();
 
   Elevator elevatorSubsystem = new Elevator(Constants.ELEVATOR_ID);
-  
 
- AlgaeIntake algaeIntakeSubsystem = new AlgaeIntake();
- LightSubsystem lights=new LightSubsystem(algaeIntakeSubsystem);
-   
+    LightSubsystem lights=new LightSubsystem();
+
+    AlgaeIntake algaeIntakeSubsystem = new AlgaeIntake(lights);
+
  /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
