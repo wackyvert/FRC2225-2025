@@ -140,9 +140,10 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    NamedCommands.registerCommand("AlgaeIntakeGodAuto", new RunAlgaeIntakeGodAuto(algaeIntakeSubsystem).withTimeout(1.5));
       NamedCommands.registerCommand("lowerIntakeBit", new LowerIntakeAutoBit(intakeSubsystem).withTimeout(1));
-      NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem).withTimeout(2));
-  NamedCommands.registerCommand("elevatorUp", new RaiseElevatorAuto(elevatorSubsystem).withTimeout(2));
+      NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem).withTimeout(3));
+  NamedCommands.registerCommand("elevatorUp", new RaiseElevatorAuto(elevatorSubsystem).withTimeout(3));
   NamedCommands.registerCommand("intakeDown", new LowerIntakeAutoBit(intakeSubsystem));
   NamedCommands.registerCommand("raiseIntake", new RaiseIntakeAuto(intakeSubsystem));
   NamedCommands.registerCommand("spitIntake2s", new OutIntake(intakeSubsystem).withTimeout(1.3));
@@ -198,7 +199,7 @@ public class RobotContainer
 
   {
        //NORMAL CENTER ONE CORAL
-    return drivebase.getAutonomousCommand("CenterSingleCoral");
+    return drivebase.getAutonomousCommand("BlueTopRedBottomSingleCoral");
     //GOD AUTO
       // return drivebase.getAutonomousCommand("God Auto");
         //BLUE TOP RED BOTTOM

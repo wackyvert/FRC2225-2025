@@ -191,7 +191,7 @@ public class LightSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         double matchTime = DriverStation.getMatchTime();
-        if (matchTime > 0 && DriverStation.isTeleopEnabled()) { // prevent weird -1 when DS is disconnected
+        if (matchTime > 0 &&  matchTime < 31 && DriverStation.isFMSAttached()) { // prevent weird -1 when DS is disconnected
 
 
             if (matchTime <= 30 && !triggered30) {

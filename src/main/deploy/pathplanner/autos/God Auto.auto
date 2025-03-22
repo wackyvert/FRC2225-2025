@@ -43,19 +43,19 @@
         {
           "type": "named",
           "data": {
-            "name": "intakeAlgae2s"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "elevatorDown"
+            "name": "AlgaeIntakeGodAuto"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Reef to Processor"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "elevatorDown"
           }
         },
         {

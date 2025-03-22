@@ -25,6 +25,7 @@ import java.util.function.BooleanSupplier;
 public class Elevator extends SubsystemBase {
     private static final double UPPER_LIMIT = -37.4;
     private static final double LOWER_LIMIT = 0;
+    private static final double AUTO_DOWN = -5.309;
     private static final double AUTO_UP = -4;
     private final SparkFlex elevatorMotor;
     private final PIDController pidController;
@@ -52,10 +53,10 @@ public class Elevator extends SubsystemBase {
         elevatorMotor.configure(elevatorMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
         climberMotor= new SparkFlex(51, SparkLowLevel.MotorType.kBrushless);
         pidController = new PIDController(0.05, 0.0, 0.01); // Just an example, please tune for your system.
-        pidController.setTolerance(.25); // Just an example, please adjust according to your lift's specifics.
+        pidController.setTolerance(.05); // Just an example, please adjust according to your lift's specifics.
     }
     public void lowerElevatorAuto(){
-        double output = pidController.calculate(getElevatorPosition(), LOWER_LIMIT);
+        double output = pidController.calculate(getElevatorPosition(), AUTO_DOWN);
         if(!bottomLimitSwitch.get()) {
             elevatorMotor.set(output);
         }
