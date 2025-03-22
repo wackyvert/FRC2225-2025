@@ -13,6 +13,12 @@
         {
           "type": "named",
           "data": {
+            "name": "lowerIntakeBit"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "spitIntake2s"
           }
         },
@@ -29,21 +35,21 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "intakeAlgae"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Move back to Reef after 180"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 2.0
+            "name": "intakeAlgae2s"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "elevatorDown"
           }
         },
         {
@@ -55,13 +61,7 @@
         {
           "type": "named",
           "data": {
-            "name": "elevatorDown"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "outtakeAlgae"
+            "name": "outtakeAlgae2s"
           }
         }
       ]

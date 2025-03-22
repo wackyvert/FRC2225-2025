@@ -86,7 +86,7 @@ public class Elevator extends SubsystemBase {
         elevatorMotor.set(0);
     }
     public void raiseElevatorAuto(){
-        double output = pidController.calculate(getElevatorPosition(), AUTO_UP);
+        double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
         if(topLimitSwitch.get()) {
             elevatorMotor.set(output);
         }

@@ -139,14 +139,14 @@ public class RobotContainer
   public RobotContainer()
   {
     NamedCommands.registerCommand("lowerIntakeBit", new LowerIntakeAutoBit(intakeSubsystem).withTimeout(1));
-  NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem));
-  NamedCommands.registerCommand("elevatorUp", new RaiseElevatorAuto(elevatorSubsystem));
+  NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem).withTimeout(2));
+  NamedCommands.registerCommand("elevatorUp", new RaiseElevatorAuto(elevatorSubsystem).withTimeout(2));
   NamedCommands.registerCommand("intakeDown", new LowerIntakeAutoBit(intakeSubsystem));
   NamedCommands.registerCommand("raiseIntake", new RaiseIntakeAuto(intakeSubsystem));
-  NamedCommands.registerCommand("spitIntake2s", new OutIntake(intakeSubsystem).withTimeout(2));
+  NamedCommands.registerCommand("spitIntake2s", new OutIntake(intakeSubsystem).withTimeout(1.3));
   NamedCommands.registerCommand("spinIntake2s", new RunIntake(intakeSubsystem).withTimeout(2));
-  NamedCommands.registerCommand("intakeAlgae", new RunAlgaeIntake (algaeIntakeSubsystem).withTimeout(2));
-  NamedCommands.registerCommand("outtakeAlgae", new BackAlgaeIntake(algaeIntakeSubsystem).withTimeout(2));
+  NamedCommands.registerCommand("intakeAlgae2s", new RunAlgaeIntake (algaeIntakeSubsystem).withTimeout(2));
+  NamedCommands.registerCommand("outtakeAlgae2s", new BackAlgaeIntake(algaeIntakeSubsystem).withTimeout(2));
 
   // Configure the trigger bindings
     configureBindings();
