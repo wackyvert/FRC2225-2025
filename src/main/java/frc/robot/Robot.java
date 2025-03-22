@@ -38,7 +38,7 @@ public class Robot extends TimedRobot
   }
   Servo eye; 
   Servo eye2;
-  LightsRainbow lightsRainbow;
+
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
    */
@@ -61,7 +61,7 @@ eye = new Servo(1);
     {
       DriverStation.silenceJoystickConnectionWarning(true);
     }
-    lightsRainbow.schedule();
+
   }
 
   /**
