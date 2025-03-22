@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,6 +15,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
@@ -39,8 +42,7 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer
 {
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(1);
   final CommandJoystick driverJoystickL = new CommandJoystick(0);
   final CommandJoystick driverJoystickR = new CommandJoystick(2);
@@ -138,8 +140,8 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    NamedCommands.registerCommand("lowerIntakeBit", new LowerIntakeAutoBit(intakeSubsystem).withTimeout(1));
-  NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem).withTimeout(2));
+      NamedCommands.registerCommand("lowerIntakeBit", new LowerIntakeAutoBit(intakeSubsystem).withTimeout(1));
+      NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem).withTimeout(2));
   NamedCommands.registerCommand("elevatorUp", new RaiseElevatorAuto(elevatorSubsystem).withTimeout(2));
   NamedCommands.registerCommand("intakeDown", new LowerIntakeAutoBit(intakeSubsystem));
   NamedCommands.registerCommand("raiseIntake", new RaiseIntakeAuto(intakeSubsystem));
@@ -147,7 +149,7 @@ public class RobotContainer
   NamedCommands.registerCommand("spinIntake2s", new RunIntake(intakeSubsystem).withTimeout(2));
   NamedCommands.registerCommand("intakeAlgae2s", new RunAlgaeIntake (algaeIntakeSubsystem).withTimeout(2));
   NamedCommands.registerCommand("outtakeAlgae2s", new BackAlgaeIntake(algaeIntakeSubsystem).withTimeout(2));
-
+  //autoChooser= AutoBuilder.buildAutoChooser("CenterSingleCoral");
   // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -193,11 +195,17 @@ public class RobotContainer
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand()
+
   {
-   // drivebase.zeroGyro();
-    // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
-    //return new LowerIntakeAuto(intakeSubsystem).andThen(new RaiseIntakeAuto(intakeSubsystem));
+       //NORMAL CENTER ONE CORAL
+    return drivebase.getAutonomousCommand("CenterSingleCoral");
+    //GOD AUTO
+      // return drivebase.getAutonomousCommand("God Auto");
+        //BLUE TOP RED BOTTOM
+      //return drivebase.getAutonomousCommand("BlueTopRedBottomSingleCoral");
+    //RED TOP BLUE BOTTOM
+      //return drivebase.getAutonomousCommand("RedTopBlueBottomSingleCoral");
+
   }
 
 

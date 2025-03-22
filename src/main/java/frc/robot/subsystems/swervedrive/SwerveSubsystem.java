@@ -27,6 +27,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -55,6 +57,8 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import frc.robot.AllianceFlipUtil;
 public class SwerveSubsystem extends SubsystemBase
 {
+  SendableChooser<Command> autoChooser;
+
   public boolean redTeam(){
     Optional<DriverStation.Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
@@ -86,7 +90,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public SwerveSubsystem(File directory)
   {
-    boolean blueAlliance = false;
+   boolean blueAlliance = false;
     Pose2d startingPose = blueAlliance ? new Pose2d(new Translation2d(Meter.of(1),
             Meter.of(4)),
             Rotation2d.fromDegrees(0))
@@ -119,6 +123,8 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
+    autoChooser=AutoBuilder.buildAutoChooser("CenterSingleCoral");
+    SmartDashboard.putData(autoChooser);
     //RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyroWithAlliance));
   }
 
@@ -266,7 +272,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Command getAutonomousCommand(String pathName)
   {
     // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return new PathPlannerAuto(pathName, AllianceFlipUtil.shouldFlip());
+    return new PathPlannerAuto(String.valueOf(autoChooser.getSelected().getName()), false);
   }
 
   /**
