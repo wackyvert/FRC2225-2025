@@ -272,7 +272,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Command getAutonomousCommand(String pathName)
   {
     // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return new PathPlannerAuto(String.valueOf(autoChooser.getSelected().getName()), false);
+    return new PathPlannerAuto("CenterSingleCoral", false);
   }
 
   /**

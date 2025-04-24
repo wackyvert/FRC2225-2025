@@ -199,7 +199,7 @@ public class RobotContainer
 
   {
        //NORMAL CENTER ONE CORAL
-    return drivebase.getAutonomousCommand("BlueTopRedBottomSingleCoral");
+    return drivebase.getAutonomousCommand("CenterSingleCoral");
     //GOD AUTO
       // return drivebase.getAutonomousCommand("God Auto");
         //BLUE TOP RED BOTTOM
