@@ -29,6 +29,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -55,20 +57,21 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-
+import frc.robot.AllianceFlipUtil;
 public class SwerveSubsystem extends SubsystemBase
 {
+  SendableChooser<Command> autoChooser;
   CommandXboxController driverXbox = new CommandXboxController(1);
   public boolean redTeam(){
     Optional<DriverStation.Alliance> ally = DriverStation.getAlliance();
-        if (ally.isPresent()) {
-            if (ally.get() == DriverStation.Alliance.Red) {
-                return true;
-            } else {
-              return false;
-            }
-        }
+    if (ally.isPresent()) {
+      if (ally.get() == DriverStation.Alliance.Red) {
+        return true;
+      } else {
         return false;
+      }
+    }
+    return false;
   }
   /**
    * Swerve drive object.
@@ -123,7 +126,9 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
-    //RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyro));
+    autoChooser=AutoBuilder.buildAutoChooser("CenterSingleCoral");
+    SmartDashboard.putData(autoChooser);
+    //RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyroWithAlliance));
   }
 
   /**
@@ -153,10 +158,6 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    int pov = driverXbox.getHID().getPOV();
-    if(pov!=-1) {
-      updateDpadLabel(driverXbox.getHID().getPOV());
-    }
     // When vision is enabled we must manually update odometry in SwerveDrive
     if (visionDriveTest)
     {
@@ -213,21 +214,22 @@ public class SwerveSubsystem extends SubsystemBase
   }
 
   public int getSelectedReefInt(){
-  if(lastConfirmedLabel.equals("front")){
-    return 0;
-  }else if(lastConfirmedLabel.equals("front right")) {
-    return 1;
-  }else if(lastConfirmedLabel.equals("back right")) {
-    return 2;
-  }else if(lastConfirmedLabel.equals("back")) {
-    return 3;
-  }else if(lastConfirmedLabel.equals("back left")) {
-    return 4;
-  }else  {
-    return 5;
+    if(lastConfirmedLabel.equals("front")){
+      return 0;
+    }else if(lastConfirmedLabel.equals("front right")) {
+      return 1;
+    }else if(lastConfirmedLabel.equals("back right")) {
+      return 2;
+    }else if(lastConfirmedLabel.equals("back")) {
+      return 3;
+    }else if(lastConfirmedLabel.equals("back left")) {
+      return 4;
+    }else  {
+      return 5;
+    }
+
   }
 
-}
   /**
    * Setup AutoBuilder for PathPlanner.
    */
@@ -332,7 +334,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Command getAutonomousCommand(String pathName)
   {
     // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return new PathPlannerAuto(pathName, redTeam());
+    return new PathPlannerAuto("CenterSingleCoral", false);
   }
 
   /**
