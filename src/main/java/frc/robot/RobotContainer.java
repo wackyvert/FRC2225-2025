@@ -11,6 +11,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -186,7 +187,7 @@ public class RobotContainer
       driverXbox.leftBumper().whileTrue(new LowerElevator(elevatorSubsystem));
       driverJoystickL.button(1).whileTrue(new RaiseClimber(elevatorSubsystem));
     driverJoystickL.button(2).whileTrue(new LowerClimber(elevatorSubsystem));
-   //driverXbox.button(5).whileTrue(new DriveToPose(drivebase, processorPose()));
+   driverXbox.button(5).whileTrue(new DriveToPose(drivebase, reefClosestCenterFace()));
     //driverJoystickL.button(4).whileTrue(new DriveToPose(drivebase, nearestLeftCoral()));
   }
   
@@ -217,7 +218,47 @@ public class RobotContainer
       }
       return FieldConstants.Processor.centerFace;
     };
-  };
+  }
+  private Supplier<Pose2d> reefClosestCenterFace() {
+    Translation2d offset = new Translation2d(0.35, 0.10);
+    return () -> {
+      if(AllianceFlipUtil.shouldFlip()){
+
+        Pose2d basePose = FieldConstants.Reef.centerFaces[drivebase.getSelectedReefInt()];
+        System.out.println(drivebase.getSelectedReefInt()+"  "+ basePose.plus(new Transform2d(offset, new Rotation2d())));
+
+        return AllianceFlipUtil.flip(basePose.plus(new Transform2d(offset, new Rotation2d())));
+      }
+
+
+      Pose2d basePose = FieldConstants.Reef.centerFaces[drivebase.getSelectedReefInt()];
+      System.out.println(drivebase.getSelectedReefInt()+"  "+ basePose.plus(new Transform2d(offset, new Rotation2d())));
+
+      return basePose.plus(new Transform2d(offset, new Rotation2d()));
+    };
+  }/*
+  private Supplier<Pose2d> reefClosestCenterFace() {
+    // Define your desired offset in the pose's local frame (e.g., forward 0.35m, left 0.10m)
+    Translation2d offset = new Translation2d(0.35, 0.10); // adjust these values as needed
+
+    return () -> {
+      if(AllianceFlipUtil.shouldFlip()){
+        Pose2d target = AllianceFlipUtil.flip(FieldConstants.Reef.centerFaces[0]);
+        Pose2d offsetPose = target.plus(new Transform2d(offset, new Rotation2d()));
+        System.out.println("Original: " + target + "\nOffset Pose: " + offsetPose + "\nCurrent Pose: " + drivebase.getPose());
+        return AllianceFlipUtil.flip(offsetPose);
+      }
+      private Supplier<Pose2d> reefClosestCenterFace() {
+        return () -> {
+          Pose2d basePose = FieldConstants.Reef.centerFaces[drivebase.getSelectedReefInt()];
+          Translation2d offset = new Translation2d(0.35, 0.10); // your fixed offset
+          return basePose.plus(new Transform2d(offset, new Rotation2d()));
+        };
+      }
+
+    };
+  }
+*/
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);

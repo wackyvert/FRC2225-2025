@@ -25,13 +25,14 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
@@ -54,11 +55,10 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-import frc.robot.AllianceFlipUtil;
+
 public class SwerveSubsystem extends SubsystemBase
 {
-  SendableChooser<Command> autoChooser;
-
+  CommandXboxController driverXbox = new CommandXboxController(1);
   public boolean redTeam(){
     Optional<DriverStation.Alliance> ally = DriverStation.getAlliance();
         if (ally.isPresent()) {
@@ -90,7 +90,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public SwerveSubsystem(File directory)
   {
-   boolean blueAlliance = false;
+    boolean blueAlliance = false;
     Pose2d startingPose = blueAlliance ? new Pose2d(new Translation2d(Meter.of(1),
             Meter.of(4)),
             Rotation2d.fromDegrees(0))
@@ -123,9 +123,7 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
-    autoChooser=AutoBuilder.buildAutoChooser("CenterSingleCoral");
-    SmartDashboard.putData(autoChooser);
-    //RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyroWithAlliance));
+    //RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyro));
   }
 
   /**
@@ -155,6 +153,10 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
+    int pov = driverXbox.getHID().getPOV();
+    if(pov!=-1) {
+      updateDpadLabel(driverXbox.getHID().getPOV());
+    }
     // When vision is enabled we must manually update odometry in SwerveDrive
     if (visionDriveTest)
     {
@@ -166,8 +168,66 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void simulationPeriodic()
   {
+    int pov = driverXbox.getHID().getPOV();
+    if(pov!=-1) {
+      updateDpadLabel(driverXbox.getHID().getPOV());
+    }
   }
 
+  private final String[] dpadNames = {
+          "back",        // 0°
+          "back left",  // 45°
+          "right",        // 90°
+          "front left",   // 135°
+          "front",         // 180°
+          "front right",    // 225°
+          "left",         // 270°
+          "back right"    // 315°
+  };
+
+  private String lastDpadName = "none";
+  private NetworkTableEntry dpadLabelEntry = NetworkTableInstance.getDefault()
+          .getTable("SmartDashboard")
+          .getEntry("DPad Direction");
+  private String lastConfirmedLabel = "none";
+  private int lastStablePOV = -1;
+  private long lastPOVChangeTime = 0;
+  private final long debounceDurationMillis = 150;
+  public void updateDpadLabel(int currentPOV) {
+    long now = System.currentTimeMillis();
+
+    if (currentPOV != lastStablePOV) {
+      lastStablePOV = currentPOV;
+      lastPOVChangeTime = now;
+    }
+
+    // Only act if POV is not -1 and has been stable for debounceDuration
+    if (currentPOV != -1 && now - lastPOVChangeTime > debounceDurationMillis) {
+      int index = (currentPOV % 360) / 45;
+      String newLabel = dpadNames[index];
+      if (!newLabel.equals(lastConfirmedLabel)) {
+        lastConfirmedLabel = newLabel;
+        dpadLabelEntry.setString(lastConfirmedLabel);
+      }
+    }
+  }
+
+  public int getSelectedReefInt(){
+  if(lastConfirmedLabel.equals("front")){
+    return 0;
+  }else if(lastConfirmedLabel.equals("front right")) {
+    return 1;
+  }else if(lastConfirmedLabel.equals("back right")) {
+    return 2;
+  }else if(lastConfirmedLabel.equals("back")) {
+    return 3;
+  }else if(lastConfirmedLabel.equals("back left")) {
+    return 4;
+  }else  {
+    return 5;
+  }
+
+}
   /**
    * Setup AutoBuilder for PathPlanner.
    */
@@ -272,7 +332,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Command getAutonomousCommand(String pathName)
   {
     // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return new PathPlannerAuto("CenterSingleCoral", false);
+    return new PathPlannerAuto(pathName, redTeam());
   }
 
   /**
