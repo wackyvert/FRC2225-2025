@@ -141,6 +141,7 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    
     NamedCommands.registerCommand("AlgaeIntakeGodAuto", new RunAlgaeIntakeGodAuto(algaeIntakeSubsystem).withTimeout(1.5));
       NamedCommands.registerCommand("lowerIntakeBit", new LowerIntakeAutoBit(intakeSubsystem).withTimeout(1));
       NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem).withTimeout(3));
@@ -185,9 +186,9 @@ public class RobotContainer
       driverXbox.leftTrigger().whileTrue(new LowerIntake(intakeSubsystem));
       driverXbox.rightBumper().whileTrue(new RaiseElevator(elevatorSubsystem));
       driverXbox.leftBumper().whileTrue(new LowerElevator(elevatorSubsystem));
-      driverJoystickL.button(1).whileTrue(new RaiseClimber(elevatorSubsystem));
-    driverJoystickL.button(2).whileTrue(new LowerClimber(elevatorSubsystem));
-   driverXbox.button(5).whileTrue(new DriveToPose(drivebase, reefClosestCenterFace()));
+      driverJoystickL.button(1).whileTrue(new RaiseClimber(elevatorSubsystem, driverJoystickL.getRawAxis(3)));
+    driverJoystickL.button(2).whileTrue(new LowerClimber(elevatorSubsystem, driverJoystickL.getRawAxis(3)));
+ // driverXbox.button(5).whileTrue(new DriveToPose(drivebase, reefClosestCenterFace()));
     //driverJoystickL.button(4).whileTrue(new DriveToPose(drivebase, nearestLeftCoral()));
   }
   

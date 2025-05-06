@@ -158,6 +158,10 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
+    int pov = driverXbox.getHID().getPOV();
+    if(pov!=-1) {
+      updateDpadLabel(driverXbox.getHID().getPOV());
+    }
     // When vision is enabled we must manually update odometry in SwerveDrive
     if (visionDriveTest)
     {

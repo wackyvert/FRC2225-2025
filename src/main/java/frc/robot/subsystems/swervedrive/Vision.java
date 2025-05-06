@@ -344,8 +344,8 @@ public class Vision
          */
         CENTER_CAM("Camera_Module_v1",
                 new Rotation3d(0, Units.degreesToRadians(180), 0),
-                new Translation3d(Units.inchesToMeters(8.38),
-                        Units.inchesToMeters(-11.96),
+                new Translation3d(Units.inchesToMeters(7.38),
+                        Units.inchesToMeters(11.96),
                         Units.inchesToMeters(18.25)),
                 VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 

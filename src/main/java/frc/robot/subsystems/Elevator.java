@@ -11,14 +11,14 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 
 import java.util.function.BooleanSupplier;
 
@@ -31,6 +31,7 @@ public class Elevator extends SubsystemBase {
     private final PIDController pidController;
     private final TalonSRX algaeIntake = new TalonSRX(16);
     private double elevatorPosition;
+    private CommandJoystick driverJoystick = new CommandJoystick(0);
     private DigitalInput topLimitSwitch = new DigitalInput(0);
     private DigitalInput bottomLimitSwitch = new DigitalInput(1);
    // private DigitalInput ballLimitSwitch = new DigitalInput(2);
@@ -96,12 +97,13 @@ public class Elevator extends SubsystemBase {
         }
     }
 
-    public void raiseClimber() {
-        climberMotor.set(0.6);
+    public void raiseClimber(double speed) {
+        climberMotor.set(.8);
+       // climberMotor.set(MathUtil.clamp(driverJoystick.getRawAxis(3), 0, .8));
+  
     }
     public void stopClimber() {climberMotor.set(0);}
-    public void lowerClimber(){climberMotor.set(-.6);}
-
+    public void lowerClimber(double speed){climberMotor.set(-.8);}
     public void raiseElevator() {
         double output = pidController.calculate(getElevatorPosition(), UPPER_LIMIT);
        if(topLimitSwitch.get()) {

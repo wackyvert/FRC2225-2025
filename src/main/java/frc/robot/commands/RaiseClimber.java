@@ -6,10 +6,12 @@ import frc.robot.subsystems.Elevator;
 public class RaiseClimber extends Command {
     private static final double TARGET_POSITION = 100.0;
     private final Elevator elevatorSubsystem;
+    double speed;
 
-    public RaiseClimber(Elevator elevatorSubsystem) {
+    public RaiseClimber(Elevator elevatorSubsystem, double speed) {
         this.elevatorSubsystem = elevatorSubsystem;
         addRequirements(elevatorSubsystem);
+        this.speed=speed;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class RaiseClimber extends Command {
         //For example, if it is bound to A, while A is pressed, it will continually be sent a command.
         //So, 60 times a second, the PID Controller calculates a new output level, and sends that to the motor.
         //This is how we can make it go up and down quickly and smoothly.
-       elevatorSubsystem.raiseClimber();
+       elevatorSubsystem.raiseClimber(speed);
     }
 
     @Override
