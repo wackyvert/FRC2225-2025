@@ -30,6 +30,7 @@ import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LightSubsystem;
+import frc.robot.subsystems.LightSubsystem.LEDState;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import java.util.function.Supplier;
@@ -77,7 +78,7 @@ public class RobotContainer
                                                                 () -> driverJoystickR.getRawAxis(0)*-1 )
                                                             .withControllerRotationAxis(()-> driverJoystickL.getRawAxis(0))
                                                             .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(0.8)
+                                                            .scaleTranslation(1)
                                                             .allianceRelativeControl(true);
 
   /**
@@ -141,7 +142,7 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    
+   // lights.setLEDState(LEDState.FIRE);
     NamedCommands.registerCommand("AlgaeIntakeGodAuto", new RunAlgaeIntakeGodAuto(algaeIntakeSubsystem).withTimeout(1.5));
       NamedCommands.registerCommand("lowerIntakeBit", new LowerIntakeAutoBit(intakeSubsystem).withTimeout(1));
       NamedCommands.registerCommand("elevatorDown", new LowerElevatorAuto(elevatorSubsystem).withTimeout(3));
@@ -152,7 +153,7 @@ public class RobotContainer
   NamedCommands.registerCommand("spinIntake2s", new RunIntake(intakeSubsystem).withTimeout(2));
   NamedCommands.registerCommand("intakeAlgae2s", new RunAlgaeIntake (algaeIntakeSubsystem).withTimeout(2));
   NamedCommands.registerCommand("outtakeAlgae2s", new BackAlgaeIntake(algaeIntakeSubsystem).withTimeout(2));
-  //autoChooser= AutoBuilder.buildAutoChooser("CenterSingleCoral");
+  
   // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -201,11 +202,11 @@ public class RobotContainer
 
   {
        //NORMAL CENTER ONE CORAL
-    return drivebase.getAutonomousCommand("CenterSingleCoral");
+    //return drivebase.getAutonomousCommand("CenterSingleCoral");
     //GOD AUTO
-      // return drivebase.getAutonomousCommand("God Auto");
+      return drivebase.getAutonomousCommand("God Auto");
         //BLUE TOP RED BOTTOM
-      //return drivebase.getAutonomousCommand("BlueTopRedBottomSingleCoral");
+    //  return drivebase.getAutonomousCommand("BlueTopRedBottomSingleCoral");
     //RED TOP BLUE BOTTOM
       //return drivebase.getAutonomousCommand("RedTopBlueBottomSingleCoral");
 

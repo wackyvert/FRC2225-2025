@@ -26,6 +26,7 @@ public class RaiseElevatorAuto extends Command {
         //So, 60 times a second, the PID Controller calculates a new output level, and sends that to the motor.
         //This is how we can make it go up and down quickly and smoothly.
        elevatorSubsystem.raiseElevatorAuto();
+       System.out.println("Elevator");
     }
 
     @Override

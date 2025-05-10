@@ -30,7 +30,8 @@ public class LightSubsystem extends SubsystemBase {
     private final int LedCount = 150;
     private Animation flashYellow = new StrobeAnimation(226,255,0, 0, .2, LedCount);
     private Animation rainbow  = new RainbowAnimation(1, 0.1, LedCount);
-    private Animation m_toAnimate = null;
+    private Animation fire = new FireAnimation(1, .5, LedCount, 100, .1);
+  private Animation m_toAnimate = null;
 
     public enum AnimationTypes {
        solid_yellow_strobe,
@@ -174,16 +175,16 @@ public class LightSubsystem extends SubsystemBase {
         GREEN,
         RAINBOW,
         TEAM_COLOR,
-        ANIMATION_OFF,
+        ANIMATION_OFF, LARSON,
 
         SOLID_RED,
 
-        FLASHING_YELLOW
+        FIRE, FLASHING_YELLOW
 
 
     }
 
-    private LEDState currentState = LEDState.RAINBOW;
+    private LEDState currentState = LEDState.FIRE;
     private LEDState lastState = null; // used to track changes
     boolean triggered25=false;
 
@@ -191,20 +192,24 @@ public class LightSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         double matchTime = DriverStation.getMatchTime();
-        if (matchTime > 0 &&  matchTime < 31 && DriverStation.isFMSAttached()) { // prevent weird -1 when DS is disconnected
+       
+        if (matchTime > 0 &&  matchTime < 31 /*&& DriverStation.isFMSAttached()*/) { // prevent weird -1 when DS is disconnected
 
 
             if (matchTime <= 30 && !triggered30) {
+           
                 new SetFlashingYellowCommand(this).schedule();
                 triggered30 = true;
             }
 
             if (matchTime <= 25 && !triggered25) {
+               
                 new SetRedCommand(this).schedule();
                 triggered25 = true;
             }
+            
         }
-        if (currentState != lastState) {
+        else if (currentState != lastState) {
             switch (currentState) {
                 case GREEN:
                     m_candle.clearAnimation(0);
@@ -222,19 +227,40 @@ public class LightSubsystem extends SubsystemBase {
                     m_candle.clearAnimation(0);
                     m_candle.setLEDs(255, 0,0);
                     break;
+
                 case FLASHING_YELLOW:
+                    m_candle.clearAnimation(0);
                     m_candle.animate(flashYellow);
                     break;
                 case RAINBOW:
-                default:
+                m_candle.clearAnimation(0);
                     m_candle.animate(rainbow);
+                    break;
+                case FIRE:
+                default:
+                m_candle.clearAnimation(0);
+                    setStripedBlueWhite();
                     break;
             }
             lastState = currentState;
         }
+        
     }
 
+    public void setStripedBlueWhite() {
+        // Clear all first
+        m_candle.clearAnimation(0);
+        for (int i = 0; i < LedCount; i++) {
+            if (i % 2 == 0) {
+                // Even index: blue
+                m_candle.setLEDs(0, 0, 255, 0, i, 1); // Correct: LED index i, 1 LED
 
+            } else {
+                // Odd index: white
+                m_candle.setLEDs(255, 255, 255, 0, i, 1);
+            }
+        }
+    }
 /*
     @Override
     public void periodic() {

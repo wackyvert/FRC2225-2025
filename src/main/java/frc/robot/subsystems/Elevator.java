@@ -26,7 +26,7 @@ public class Elevator extends SubsystemBase {
     private static final double UPPER_LIMIT = -37.4;
     private static final double LOWER_LIMIT = 0;
     private static final double AUTO_DOWN = -5.309;
-    private static final double AUTO_UP = -4;
+    private static final double AUTO_UP = -34;
     private final SparkFlex elevatorMotor;
     private final PIDController pidController;
     private final TalonSRX algaeIntake = new TalonSRX(16);

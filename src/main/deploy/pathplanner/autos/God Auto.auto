@@ -51,18 +51,6 @@
           "data": {
             "pathName": "Reef to Processor"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "elevatorDown"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "outtakeAlgae2s"
-          }
         }
       ]
     }

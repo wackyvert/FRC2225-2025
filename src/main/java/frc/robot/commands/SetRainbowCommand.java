@@ -12,6 +12,6 @@ public class SetRainbowCommand extends InstantCommand {
 
     @Override
     public void initialize() {
-        lights.setLEDState(LightSubsystem.LEDState.RAINBOW);
+        lights.setLEDState(LightSubsystem.LEDState.FIRE);
     }
 }
